@@ -183,7 +183,76 @@ Summary:
 
 ## Database Schema Summary
 
-| Collection | Key Fields | Relationship |
+### Entity-Relationship (ER) Diagram
+
+```mermaid
+erDiagram
+    USERS ||--o{ HOTELS : "creates (createdBy)"
+    USERS ||--o{ BOOKINGS : "books (guestId)"
+    HOTELS ||--|{ ROOM_TYPES : "contains (hotelId)"
+    ROOM_TYPES ||--|{ ROOMS : "has (roomTypeId)"
+    ROOM_TYPES ||--o{ PRICING_RULES : "configured with (roomTypeId)"
+    ROOM_TYPES ||--o{ BOOKINGS : "reserved for (roomTypeId)"
+    HOTELS ||--o{ BOOKINGS : "hosts (hotelId)"
+    ROOMS ||--o{ BOOKINGS : "assigned at check-in (roomId)"
+
+    USERS {
+        ObjectId _id PK
+        string name
+        string email UK
+        string passwordHash
+        string role "guest | staff | admin"
+    }
+
+    HOTELS {
+        ObjectId _id PK
+        string name
+        string city
+        string[] amenities "embedded"
+        number rating
+        ObjectId createdBy FK
+    }
+
+    ROOM_TYPES {
+        ObjectId _id PK
+        ObjectId hotelId FK
+        string name
+        number basePrice
+        number totalRooms
+        number capacity
+    }
+
+    ROOMS {
+        ObjectId _id PK
+        ObjectId roomTypeId FK
+        string roomNumber
+        string housekeepingStatus "clean | dirty | inspected | out_of_service"
+    }
+
+    BOOKINGS {
+        ObjectId _id PK
+        ObjectId guestId FK
+        ObjectId hotelId FK
+        ObjectId roomTypeId FK
+        ObjectId roomId FK
+        date checkIn
+        date checkOut
+        string status "reserved | confirmed | checked_in | checked_out | cancelled"
+        object[] statusHistory "embedded"
+        number totalAmount
+        object cancellation "embedded"
+    }
+
+    PRICING_RULES {
+        ObjectId _id PK
+        ObjectId roomTypeId FK
+        string season
+        string ruleType "seasonal | weekend"
+        number multiplier
+    }
+```
+
+### Collection Reference Table
 |---|---|---|
 | `users` | name, email, passwordHash, role | Referenced by hotels (createdBy), bookings (guestId) |
 | `hotels` | name, city, amenities[] (embedded), rating, createdBy (ref) | One-to-many with roomTypes |
@@ -268,6 +337,28 @@ hotel-booking-platform/
 - **Business-rule conflict:** book the last available room twice for the same dates →
   the second request returns `409 AVAILABILITY_CONFLICT`, not a silent double-booking.
 - **Not-found case:** GET `/api/bookings/000000000000000000000000` → clean `404`, no crash.
+
+---
+
+## Automated Test Suite (`npm test`)
+
+The project includes an automated end-to-end API test suite (`test/test.js`) validating all 13 modules, RBAC security, dynamic pricing, front desk workflow, and negative cases without external dependencies:
+
+```bash
+npm test
+```
+
+### Test Coverage:
+- **Health & Diagnostics:** `/api/health` returns operational status and verified MongoDB connection.
+- **Authentication & RBAC:** Tests registration, JWT token generation, and multi-role login (Admin, Staff, Guest).
+- **Inventory & Search:** Validates properties, room inventory, and live availability calculation.
+- **Reservation & Pricing:** Tests reservation creation with live availability locking and dynamic price computation.
+- **Front Desk Workflow:** Validates status progression (`reserved` → `confirmed` → `checked_in` → `checked_out`), clean room requirement on check-in, and automatic flagging to `dirty` on check-out.
+- **Housekeeping:** Verifies transitioning room cleanliness status.
+- **Cancellation & Refunds:** Validates tiered percentage calculation (>7 days = 100% refund).
+- **Guest History:** Verifies segregated upcoming and past reservation retrieval.
+- **Admin Analytics:** Tests aggregation of occupancy percentages and property revenue.
+- **Negative Edge Cases:** Confirms clean error responses for `400` (bad dates), `401` (missing token), `403` (forbidden role), `404` (missing resource), and `409` (invalid status transition).
 
 ---
 

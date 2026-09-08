@@ -36,8 +36,20 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/guests', guestRoutes);
 app.use('/api/admin', adminRoutes);
 
+const mongoose = require('mongoose');
+
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ success: true, message: 'API is healthy', data: { uptime: process.uptime() } });
+  const isDbConnected = mongoose.connection.readyState === 1;
+  res.status(200).json({
+    success: true,
+    message: 'API is healthy',
+    data: {
+      uptime: process.uptime(),
+      database: isDbConnected ? 'connected' : 'disconnected',
+      environment: process.env.NODE_ENV || 'development',
+      timestamp: new Date().toISOString(),
+    },
+  });
 });
 
 // 404 + centralized error handling (must be registered last)
