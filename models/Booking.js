@@ -49,8 +49,23 @@ const bookingSchema = new mongoose.Schema(
       reason: { type: String, default: '' },
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
+
+// Virtual: calculate total stay duration in nights
+bookingSchema.virtual('nights').get(function () {
+  if (!this.checkIn || !this.checkOut) return 0;
+  return Math.max(Math.ceil((new Date(this.checkOut) - new Date(this.checkIn)) / (1000 * 60 * 60 * 24)), 1);
+});
+
+// Instance method: verify whether booking is eligible for cancellation
+bookingSchema.methods.canCancel = function () {
+  return !['checked_in', 'checked_out', 'cancelled'].includes(this.status);
+};
 
 bookingSchema.index({ guestId: 1 });
 bookingSchema.index({ hotelId: 1, roomTypeId: 1, checkIn: 1, checkOut: 1 });

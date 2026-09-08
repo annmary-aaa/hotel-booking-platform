@@ -20,4 +20,9 @@ const roomSchema = new mongoose.Schema(
 roomSchema.index({ roomTypeId: 1 });
 roomSchema.index({ roomTypeId: 1, roomNumber: 1 }, { unique: true });
 
+// Instance method to check room readiness for guest check-in
+roomSchema.methods.isReadyForCheckIn = function () {
+  return this.isActive && ['clean', 'inspected'].includes(this.housekeepingStatus);
+};
+
 module.exports = mongoose.model('Room', roomSchema);

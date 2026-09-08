@@ -163,7 +163,7 @@ const checkinBooking = asyncHandler(async (req, res) => {
   if (!room || String(room.roomTypeId) !== String(booking.roomTypeId)) {
     throw new ApiError(404, 'Room not found for this booking\'s room type.', 'NOT_FOUND');
   }
-  if (!['clean', 'inspected'].includes(room.housekeepingStatus)) {
+  if (!room.isReadyForCheckIn()) {
     throw new ApiError(
       409,
       `Room ${room.roomNumber} is not ready for check-in (housekeeping status: ${room.housekeepingStatus}).`,
@@ -214,7 +214,7 @@ const checkoutBooking = asyncHandler(async (req, res) => {
 const cancelBooking = asyncHandler(async (req, res) => {
   const booking = await loadBookingWithOwnershipCheck(req.params.id, req.user);
 
-  if (['checked_in', 'checked_out', 'cancelled'].includes(booking.status)) {
+  if (!booking.canCancel()) {
     throw new ApiError(
       409,
       `Cannot cancel a booking with status '${booking.status}'.`,
