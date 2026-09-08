@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Grand Horizon — Reservations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">GH</span>
+    <span class="brand-name">Grand Horizon</span>
+  </div>
+  <nav id="navTabs" class="nav-tabs">
+    <button class="tab-btn active" data-view="search">Find a room</button>
+    <button class="tab-btn" data-view="bookings">My bookings</button>
+    <button class="tab-btn" data-view="staff" id="staffTabBtn" hidden>Front desk</button>
+    <button class="tab-btn" data-view="admin" id="adminTabBtn" hidden>Property admin</button>
+  </nav>
+  <div class="auth-box" id="authBox">
+    <span id="userGreeting" hidden></span>
+    <button id="loginOpenBtn" class="btn btn-ghost">Log in</button>
+    <button id="logoutBtn" class="btn btn-ghost" hidden>Log out</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- SEARCH / BOOK VIEW -->
+  <section id="view-search" class="view active">
+    <div class="hero">
+      <h1>Rooms, held for you.</h1>
+      <p class="hero-sub">Search live availability across every Grand Horizon property, priced the moment you ask.</p>
+    </div>
+
+    <form id="searchForm" class="search-panel">
+      <div class="field">
+        <label for="s-city">City</label>
+        <input type="text" id="s-city" placeholder="Bengaluru" />
+      </div>
+      <div class="field">
+        <label for="s-checkin">Check-in</label>
+        <input type="date" id="s-checkin" required />
+      </div>
+      <div class="field">
+        <label for="s-checkout">Check-out</label>
+        <input type="date" id="s-checkout" required />
+      </div>
+      <div class="field">
+        <label for="s-occupancy">Guests</label>
+        <input type="number" id="s-occupancy" min="1" value="2" />
+      </div>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <div id="searchStatus" class="status-line"></div>
+    <div id="searchResults" class="result-grid"></div>
+  </section>
+
+  <!-- MY BOOKINGS VIEW -->
+  <section id="view-bookings" class="view">
+    <h2>My bookings</h2>
+    <div id="bookingsStatus" class="status-line"></div>
+    <div class="booking-columns">
+      <div>
+        <h3>Upcoming</h3>
+        <div id="upcomingBookings" class="booking-list"></div>
+      </div>
+      <div>
+        <h3>Past &amp; cancelled</h3>
+        <div id="pastBookings" class="booking-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAFF / FRONT DESK VIEW -->
+  <section id="view-staff" class="view">
+    <h2>Front desk</h2>
+    <div class="staff-grid">
+      <div class="panel">
+        <h3>Bookings queue</h3>
+        <div class="filter-row">
+          <select id="staffStatusFilter">
+            <option value="">All statuses</option>
+            <option value="reserved">Reserved</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="checked_in">Checked in</option>
+            <option value="checked_out">Checked out</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <button id="staffRefreshBtn" class="btn btn-ghost">Refresh</button>
+        </div>
+        <div id="staffBookingsList" class="booking-list"></div>
+      </div>
+      <div class="panel">
+        <h3>Housekeeping</h3>
+        <div class="filter-row">
+          <input type="text" id="hkRoomTypeId" placeholder="Room type ID (optional)" />
+          <button id="hkRefreshBtn" class="btn btn-ghost">Load rooms</button>
+        </div>
+        <div id="roomsList" class="room-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADMIN VIEW -->
+  <section id="view-admin" class="view">
+    <h2>Property admin</h2>
+    <div class="admin-grid">
+      <div class="panel">
+        <h3>Add a hotel</h3>
+        <form id="hotelForm" class="stacked-form">
+          <input type="text" id="h-name" placeholder="Hotel name" required />
+          <input type="text" id="h-city" placeholder="City" required />
+          <input type="text" id="h-address" placeholder="Address" />
+          <input type="text" id="h-amenities" placeholder="Amenities, comma separated" />
+          <button type="submit" class="btn btn-primary">Create hotel</button>
+        </form>
+        <div id="hotelsList" class="chip-list"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Add a room type</h3>
+        <form id="roomTypeForm" class="stacked-form">
+          <input type="text" id="rt-hotelId" placeholder="Hotel ID" required />
+          <input type="text" id="rt-name" placeholder="Room type name (e.g. Deluxe)" required />
+          <input type="number" id="rt-basePrice" placeholder="Base price / night" required />
+          <input type="number" id="rt-totalRooms" placeholder="Total rooms" required />
+          <input type="number" id="rt-capacity" placeholder="Capacity / room" required />
+          <button type="submit" class="btn btn-primary">Create room type</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h3>Add a pricing rule</h3>
+        <form id="pricingForm" class="stacked-form">
+          <input type="text" id="p-roomTypeId" placeholder="Room type ID" required />
+          <input type="text" id="p-season" placeholder="Rule name (e.g. Festive Season)" required />
+          <select id="p-ruleType">
+            <option value="seasonal">Seasonal</option>
+            <option value="weekend">Weekend</option>
+          </select>
+          <input type="date" id="p-startDate" />
+          <input type="date" id="p-endDate" />
+          <input type="number" step="0.05" id="p-multiplier" placeholder="Multiplier (e.g. 1.25)" required />
+          <button type="submit" class="btn btn-primary">Create pricing rule</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h3>Occupancy report</h3>
+        <div class="filter-row">
+          <input type="text" id="rep-hotelId" placeholder="Hotel ID (optional)" />
+          <button id="reportBtn" class="btn btn-ghost">Run report</button>
+        </div>
+        <div id="reportResults" class="report-list"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- LOGIN / REGISTER MODAL -->
+<div id="authModal" class="modal-backdrop" hidden>
+  <div class="modal">
+    <button class="modal-close" id="modalCloseBtn">&times;</button>
+    <div class="modal-tabs">
+      <button class="modal-tab-btn active" data-form="login">Log in</button>
+      <button class="modal-tab-btn" data-form="register">Create account</button>
+    </div>
+
+    <form id="loginForm" class="stacked-form modal-form active">
+      <input type="email" id="l-email" placeholder="Email" required />
+      <input type="password" id="l-password" placeholder="Password" required />
+      <button type="submit" class="btn btn-primary">Log in</button>
+      <p class="hint">Try admin@hotel.com / staff@hotel.com / guest@hotel.com — password: Password123! (after running the seed script)</p>
+    </form>
+
+    <form id="registerForm" class="stacked-form modal-form">
+      <input type="text" id="r-name" placeholder="Full name" required />
+      <input type="email" id="r-email" placeholder="Email" required />
+      <input type="password" id="r-password" placeholder="Password (min 6 characters)" required />
+      <button type="submit" class="btn btn-primary">Create guest account</button>
+    </form>
+
+    <div id="authError" class="auth-error"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="/js/api.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

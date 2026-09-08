@@ -1,0 +1,485 @@
+{
+  "info": {
+    "name": "Grand Horizon - Hotel Booking Platform (P03)",
+    "description": "CIA-3 Node.js backend project. Run Auth > Login (Admin) first, then create a hotel, room type, and pricing rule as admin; log in as a guest to search and book; log in as staff to confirm/check-in/check-out. Collection variables auto-populate from responses.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api" },
+    { "key": "token", "value": "" },
+    { "key": "guestToken", "value": "" },
+    { "key": "staffToken", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "hotelId", "value": "" },
+    { "key": "roomTypeId", "value": "" },
+    { "key": "roomId", "value": "" },
+    { "key": "bookingId", "value": "" },
+    { "key": "pricingRuleId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register Guest",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Gary Guest\",\n  \"email\": \"guest@hotel.com\",\n  \"password\": \"Password123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (Admin)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const data = pm.response.json().data;",
+                "if (data && data.token) { pm.collectionVariables.set('token', data.token); pm.collectionVariables.set('userId', data._id); }"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@hotel.com\",\n  \"password\": \"Password123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (Guest)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const data = pm.response.json().data;",
+                "if (data && data.token) { pm.collectionVariables.set('guestToken', data.token); pm.collectionVariables.set('userId', data._id); }"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"guest@hotel.com\",\n  \"password\": \"Password123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (Staff)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const data = pm.response.json().data;",
+                "if (data && data.token) { pm.collectionVariables.set('staffToken', data.token); }"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"staff@hotel.com\",\n  \"password\": \"Password123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/auth/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hotels",
+      "item": [
+        {
+          "name": "Create Hotel (admin)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const data = pm.response.json().data;",
+                "if (data && data._id) { pm.collectionVariables.set('hotelId', data._id); }"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/hotels",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Grand Horizon Hotel\",\n  \"city\": \"Bengaluru\",\n  \"address\": \"MG Road, Bengaluru\",\n  \"amenities\": [\"Free WiFi\", \"Pool\", \"Gym\"],\n  \"rating\": 4.5\n}"
+            }
+          }
+        },
+        {
+          "name": "List Hotels",
+          "request": { "method": "GET", "url": "{{baseUrl}}/hotels?page=1&limit=10" }
+        },
+        {
+          "name": "Get Hotel By Id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/hotels/{{hotelId}}" }
+        },
+        {
+          "name": "Search Availability",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/hotels/search?city=Bengaluru&checkIn=2026-10-10&checkOut=2026-10-12&occupancy=2"
+          }
+        },
+        {
+          "name": "Update Hotel (admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/hotels/{{hotelId}}",
+            "body": { "mode": "raw", "raw": "{\n  \"rating\": 4.7\n}" }
+          }
+        },
+        {
+          "name": "Deactivate Hotel (admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/hotels/{{hotelId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Room Types & Rooms",
+      "item": [
+        {
+          "name": "Create Room Type (admin)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const data = pm.response.json().data;",
+                "if (data && data._id) { pm.collectionVariables.set('roomTypeId', data._id); }"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/room-types",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hotelId\": \"{{hotelId}}\",\n  \"name\": \"Deluxe\",\n  \"description\": \"Comfortable room with city view\",\n  \"basePrice\": 4000,\n  \"totalRooms\": 5,\n  \"capacity\": 2,\n  \"amenities\": [\"AC\", \"TV\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "List Room Types",
+          "request": { "method": "GET", "url": "{{baseUrl}}/room-types?hotelId={{hotelId}}" }
+        },
+        {
+          "name": "Get Room Type By Id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/room-types/{{roomTypeId}}" }
+        },
+        {
+          "name": "Update Room Type (admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/room-types/{{roomTypeId}}",
+            "body": { "mode": "raw", "raw": "{\n  \"basePrice\": 4200\n}" }
+          }
+        },
+        {
+          "name": "List Rooms (staff/admin)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const data = pm.response.json().data;",
+                "if (Array.isArray(data) && data.length) { pm.collectionVariables.set('roomId', data[0]._id); }"
+              ]
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/rooms?roomTypeId={{roomTypeId}}"
+          }
+        },
+        {
+          "name": "Update Housekeeping Status (staff)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
+            ],
+            "url": "{{baseUrl}}/rooms/{{roomId}}/housekeeping",
+            "body": { "mode": "raw", "raw": "{\n  \"housekeepingStatus\": \"clean\"\n}" }
+          }
+        },
+        {
+          "name": "Delete Room Type (admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/room-types/{{roomTypeId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pricing Rules",
+      "item": [
+        {
+          "name": "Create Pricing Rule - Weekend (admin)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const data = pm.response.json().data;",
+                "if (data && data._id) { pm.collectionVariables.set('pricingRuleId', data._id); }"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/pricing-rules",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"season\": \"Weekend Rate\",\n  \"ruleType\": \"weekend\",\n  \"multiplier\": 1.2\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Pricing Rule - Seasonal (admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/pricing-rules",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"season\": \"Festive Season 2026\",\n  \"ruleType\": \"seasonal\",\n  \"startDate\": \"2026-12-15\",\n  \"endDate\": \"2027-01-05\",\n  \"multiplier\": 1.5\n}"
+            }
+          }
+        },
+        {
+          "name": "List Pricing Rules",
+          "request": { "method": "GET", "url": "{{baseUrl}}/pricing-rules?roomTypeId={{roomTypeId}}" }
+        },
+        {
+          "name": "Update Pricing Rule (admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/pricing-rules/{{pricingRuleId}}",
+            "body": { "mode": "raw", "raw": "{\n  \"multiplier\": 1.25\n}" }
+          }
+        },
+        {
+          "name": "Delete Pricing Rule (admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/pricing-rules/{{pricingRuleId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Create Booking (guest)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const data = pm.response.json().data;",
+                "if (data && data._id) { pm.collectionVariables.set('bookingId', data._id); }"
+              ]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
+            ],
+            "url": "{{baseUrl}}/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hotelId\": \"{{hotelId}}\",\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"checkIn\": \"2026-10-10\",\n  \"checkOut\": \"2026-10-12\",\n  \"numGuests\": 2,\n  \"numRooms\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "List All Bookings (staff/admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/bookings"
+          }
+        },
+        {
+          "name": "Get Booking By Id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{guestToken}}" }],
+            "url": "{{baseUrl}}/bookings/{{bookingId}}"
+          }
+        },
+        {
+          "name": "Get Invoice",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{guestToken}}" }],
+            "url": "{{baseUrl}}/bookings/{{bookingId}}/invoice"
+          }
+        },
+        {
+          "name": "Confirm Booking (staff)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }],
+            "url": "{{baseUrl}}/bookings/{{bookingId}}/confirm"
+          }
+        },
+        {
+          "name": "Check-in Booking (staff)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" }
+            ],
+            "url": "{{baseUrl}}/bookings/{{bookingId}}/checkin",
+            "body": { "mode": "raw", "raw": "{\n  \"roomId\": \"{{roomId}}\"\n}" }
+          }
+        },
+        {
+          "name": "Check-out Booking (staff)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }],
+            "url": "{{baseUrl}}/bookings/{{bookingId}}/checkout"
+          }
+        },
+        {
+          "name": "Cancel Booking (guest)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
+            ],
+            "url": "{{baseUrl}}/bookings/{{bookingId}}/cancel",
+            "body": { "mode": "raw", "raw": "{\n  \"reason\": \"Change of plans\"\n}" }
+          }
+        },
+        {
+          "name": "[Negative] Create Booking - invalid dates (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
+            ],
+            "url": "{{baseUrl}}/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hotelId\": \"{{hotelId}}\",\n  \"roomTypeId\": \"{{roomTypeId}}\",\n  \"checkIn\": \"2026-10-12\",\n  \"checkOut\": \"2026-10-10\",\n  \"numGuests\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "[Negative] List Bookings without token (401)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/bookings" }
+        },
+        {
+          "name": "[Negative] Create Hotel as guest (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{guestToken}}" }
+            ],
+            "url": "{{baseUrl}}/hotels",
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Should Fail\",\n  \"city\": \"Nowhere\"\n}" }
+          }
+        },
+        {
+          "name": "[Negative] Get Booking - invalid id (404)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{guestToken}}" }],
+            "url": "{{baseUrl}}/bookings/000000000000000000000000"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Guests",
+      "item": [
+        {
+          "name": "Guest Booking History",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{guestToken}}" }],
+            "url": "{{baseUrl}}/guests/{{userId}}/bookings"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Reports",
+      "item": [
+        {
+          "name": "Occupancy Report",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/admin/reports/occupancy?hotelId={{hotelId}}"
+          }
+        }
+      ]
+    }
+  ]
+}
