@@ -60,6 +60,7 @@ const api = {
 
   createBooking: (payload) => apiRequest('/bookings', { method: 'POST', body: payload }),
   myBookings: (userId) => apiRequest(`/guests/${userId}/bookings`),
+  getInvoice: (id) => apiRequest(`/bookings/${id}/invoice`),
   cancelBooking: (id, reason) => apiRequest(`/bookings/${id}/cancel`, { method: 'PUT', body: { reason } }),
   confirmBooking: (id) => apiRequest(`/bookings/${id}/confirm`, { method: 'PUT' }),
   checkinBooking: (id, roomId) => apiRequest(`/bookings/${id}/checkin`, { method: 'PUT', body: { roomId } }),

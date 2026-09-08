@@ -1,19 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Grand Horizon — Reservations</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Grand Horizon — Boutique Chic Luxury Stays</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=3.2" />
 </head>
 <body>
 
 <header class="topbar">
-  <div class="brand">
-    <span class="brand-mark">GH</span>
-    <span class="brand-name">Grand Horizon</span>
+  <div class="brand" onclick="switchView('search')" title="Grand Horizon — Return to Sanctuary Search">
+    <div class="brand-emblem" aria-label="Grand Horizon Crest">
+      <svg width="44" height="44" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="crestGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#E8C99B"/>
+            <stop offset="40%" stop-color="#C58D54"/>
+            <stop offset="75%" stop-color="#9E612B"/>
+            <stop offset="100%" stop-color="#B87B44"/>
+          </linearGradient>
+          <linearGradient id="crestEspresso" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#3A281E"/>
+            <stop offset="100%" stop-color="#1A110B"/>
+          </linearGradient>
+          <radialGradient id="crestParchment" cx="50%" cy="40%" r="65%">
+            <stop offset="0%" stop-color="#FFFFFF"/>
+            <stop offset="85%" stop-color="#FDF9F3"/>
+            <stop offset="100%" stop-color="#F4EAE0"/>
+          </radialGradient>
+        </defs>
+        <rect x="2.5" y="2.5" width="47" height="47" rx="12" fill="url(#crestParchment)" stroke="url(#crestGold)" stroke-width="1.5"/>
+        <rect x="6" y="6" width="40" height="40" rx="8.5" fill="none" stroke="#C58D54" stroke-width="0.75" stroke-dasharray="3 2" opacity="0.7"/>
+        <path d="M26 8.5L27.2 11.8L30.5 13L27.2 14.2L26 17.5L24.8 14.2L21.5 13L24.8 11.8Z" fill="url(#crestGold)"/>
+        <path d="M15 39V24.5C15 18.425 19.925 13.5 26 13.5C32.075 13.5 37 18.425 37 24.5V39" stroke="url(#crestGold)" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.45"/>
+        <path d="M33.5 24C32.7 19.8 29.8 17.5 25.8 17.5C20.6 17.5 17 21.6 17 27C17 32.4 20.6 36.5 26 36.5C30.6 36.5 33.4 33.8 33.6 29.5H25.8" stroke="url(#crestEspresso)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M22 22.5V31.5M29.5 22.5V31.5M22 27H29.5" stroke="url(#crestGold)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="12" y1="40" x2="40" y2="40" stroke="url(#crestGold)" stroke-width="1.3" stroke-linecap="round"/>
+        <circle cx="12" cy="40" r="1.2" fill="#B87B44"/>
+        <circle cx="40" cy="40" r="1.2" fill="#B87B44"/>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <span class="brand-title">GRAND HORIZON</span>
+      <span class="brand-tagline">HOTELS &amp; SANCTUARIES</span>
+    </div>
   </div>
   <nav id="navTabs" class="nav-tabs">
     <button class="tab-btn active" data-view="search">Find a room</button>
@@ -33,28 +69,105 @@
   <!-- SEARCH / BOOK VIEW -->
   <section id="view-search" class="view active">
     <div class="hero">
-      <h1>Rooms, held for you.</h1>
-      <p class="hero-sub">Search live availability across every Grand Horizon property, priced the moment you ask.</p>
+      <div class="hero-pill">
+        <span class="dot"></span>
+        Boutique Chic &amp; Luxury Stays
+      </div>
+      <h1>Luxury Hotel &amp; Resort</h1>
+      <p class="hero-sub">Experience boutique hospitality, bespoke guest sanctuaries, and live dynamic rates tailored the moment you reserve.</p>
     </div>
 
+    <!-- Featured Amenities Bar with Professional Minimalist Line SVGs -->
+    <div class="amenities-bar">
+      <div class="amenity-pill">
+        <span class="amenity-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+            <line x1="6" y1="1" x2="6" y2="4"/>
+            <line x1="10" y1="1" x2="10" y2="4"/>
+            <line x1="14" y1="1" x2="14" y2="4"/>
+          </svg>
+        </span>
+        <span>Cafe &amp; Bar</span>
+      </div>
+
+      <div class="amenity-pill">
+        <span class="amenity-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            <circle cx="12" cy="16" r="1.5"/>
+          </svg>
+        </span>
+        <span>Strongbox</span>
+      </div>
+
+      <div class="amenity-pill">
+        <span class="amenity-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12h16a1 1 0 0 1 1 1v3a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-3a1 1 0 0 1 1-1z"/>
+            <path d="M6 12V5a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1"/>
+            <line x1="4" y1="20" x2="5" y2="22"/>
+            <line x1="20" y1="20" x2="19" y2="22"/>
+          </svg>
+        </span>
+        <span>Soaking Tub</span>
+      </div>
+
+      <div class="amenity-pill">
+        <span class="amenity-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 19h20M2 19V7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12"/>
+            <path d="M4 11h16M12 11V5"/>
+            <path d="M2 19v3M22 19v3"/>
+          </svg>
+        </span>
+        <span>Double Suite</span>
+      </div>
+
+      <div class="amenity-pill">
+        <span class="amenity-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 10a6 6 0 0 0-12 0v1h12v-1z"/>
+            <line x1="3" y1="15" x2="21" y2="15"/>
+            <path d="M5 15v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"/>
+            <line x1="12" y1="4" x2="12" y2="2"/>
+          </svg>
+        </span>
+        <span>Artisan Breakfast</span>
+      </div>
+
+      <div class="amenity-pill">
+        <span class="amenity-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 18h18M12 4a7 7 0 0 0-7 7v7h14v-7a7 7 0 0 0-7-7z"/>
+            <line x1="12" y1="2" x2="12" y2="4"/>
+          </svg>
+        </span>
+        <span>24/7 Concierge</span>
+      </div>
+    </div>
+
+    <!-- Floating Booking Bar (Inspired by User Reference 2) -->
     <form id="searchForm" class="search-panel">
       <div class="field">
-        <label for="s-city">City</label>
-        <input type="text" id="s-city" placeholder="Bengaluru" />
+        <label for="s-city">Destination / City</label>
+        <input type="text" id="s-city" placeholder="e.g. Bengaluru, Mumbai" />
       </div>
       <div class="field">
-        <label for="s-checkin">Check-in</label>
+        <label for="s-checkin">Arrival Date</label>
         <input type="date" id="s-checkin" required />
       </div>
       <div class="field">
-        <label for="s-checkout">Check-out</label>
+        <label for="s-checkout">Departure Date</label>
         <input type="date" id="s-checkout" required />
       </div>
       <div class="field">
         <label for="s-occupancy">Guests</label>
         <input type="number" id="s-occupancy" min="1" value="2" />
       </div>
-      <button type="submit" class="btn btn-primary">Search</button>
+      <button type="submit" class="btn btn-primary">Check Availability</button>
     </form>
 
     <div id="searchStatus" class="status-line"></div>
@@ -63,15 +176,15 @@
 
   <!-- MY BOOKINGS VIEW -->
   <section id="view-bookings" class="view">
-    <h2>My bookings</h2>
+    <h2>My Reservations</h2>
     <div id="bookingsStatus" class="status-line"></div>
     <div class="booking-columns">
       <div>
-        <h3>Upcoming</h3>
+        <h3>Upcoming Stays</h3>
         <div id="upcomingBookings" class="booking-list"></div>
       </div>
       <div>
-        <h3>Past &amp; cancelled</h3>
+        <h3>Past &amp; Cancelled</h3>
         <div id="pastBookings" class="booking-list"></div>
       </div>
     </div>
@@ -79,28 +192,28 @@
 
   <!-- STAFF / FRONT DESK VIEW -->
   <section id="view-staff" class="view">
-    <h2>Front desk</h2>
+    <h2>Front Desk Operations</h2>
     <div class="staff-grid">
       <div class="panel">
-        <h3>Bookings queue</h3>
+        <h3>Live Bookings Queue</h3>
         <div class="filter-row">
           <select id="staffStatusFilter">
-            <option value="">All statuses</option>
+            <option value="">All Statuses</option>
             <option value="reserved">Reserved</option>
             <option value="confirmed">Confirmed</option>
-            <option value="checked_in">Checked in</option>
-            <option value="checked_out">Checked out</option>
+            <option value="checked_in">Checked In</option>
+            <option value="checked_out">Checked Out</option>
             <option value="cancelled">Cancelled</option>
           </select>
-          <button id="staffRefreshBtn" class="btn btn-ghost">Refresh</button>
+          <button id="staffRefreshBtn" class="btn btn-ghost">Refresh Queue</button>
         </div>
         <div id="staffBookingsList" class="booking-list"></div>
       </div>
       <div class="panel">
-        <h3>Housekeeping</h3>
+        <h3>Housekeeping Status</h3>
         <div class="filter-row">
-          <input type="text" id="hkRoomTypeId" placeholder="Room type ID (optional)" />
-          <button id="hkRefreshBtn" class="btn btn-ghost">Load rooms</button>
+          <input type="text" id="hkRoomTypeId" placeholder="Filter by Room Type ID" />
+          <button id="hkRefreshBtn" class="btn btn-ghost">Load Rooms</button>
         </div>
         <div id="roomsList" class="room-list"></div>
       </div>
@@ -109,53 +222,54 @@
 
   <!-- ADMIN VIEW -->
   <section id="view-admin" class="view">
-    <h2>Property admin</h2>
+    <h2>Property &amp; Yield Management</h2>
     <div class="admin-grid">
       <div class="panel">
-        <h3>Add a hotel</h3>
+        <h3>Add Hotel Property</h3>
         <form id="hotelForm" class="stacked-form">
-          <input type="text" id="h-name" placeholder="Hotel name" required />
+          <input type="text" id="h-name" placeholder="Hotel Name" required />
           <input type="text" id="h-city" placeholder="City" required />
           <input type="text" id="h-address" placeholder="Address" />
-          <input type="text" id="h-amenities" placeholder="Amenities, comma separated" />
-          <button type="submit" class="btn btn-primary">Create hotel</button>
+          <input type="text" id="h-amenities" placeholder="Amenities (comma separated: Cafe, Pool, Spa)" />
+          <button type="submit" class="btn btn-primary">Create Hotel</button>
         </form>
+        <p class="hint">Click any ID below to copy to clipboard:</p>
         <div id="hotelsList" class="chip-list"></div>
       </div>
 
       <div class="panel">
-        <h3>Add a room type</h3>
+        <h3>Add Room Type</h3>
         <form id="roomTypeForm" class="stacked-form">
           <input type="text" id="rt-hotelId" placeholder="Hotel ID" required />
-          <input type="text" id="rt-name" placeholder="Room type name (e.g. Deluxe)" required />
-          <input type="number" id="rt-basePrice" placeholder="Base price / night" required />
-          <input type="number" id="rt-totalRooms" placeholder="Total rooms" required />
-          <input type="number" id="rt-capacity" placeholder="Capacity / room" required />
-          <button type="submit" class="btn btn-primary">Create room type</button>
+          <input type="text" id="rt-name" placeholder="Room Type Name (e.g. Deluxe Suite)" required />
+          <input type="number" id="rt-basePrice" placeholder="Base Price / Night (₹)" required />
+          <input type="number" id="rt-totalRooms" placeholder="Total Room Inventory" required />
+          <input type="number" id="rt-capacity" placeholder="Guest Capacity" required />
+          <button type="submit" class="btn btn-primary">Create Room Type</button>
         </form>
       </div>
 
       <div class="panel">
-        <h3>Add a pricing rule</h3>
+        <h3>Dynamic Pricing Rule</h3>
         <form id="pricingForm" class="stacked-form">
-          <input type="text" id="p-roomTypeId" placeholder="Room type ID" required />
-          <input type="text" id="p-season" placeholder="Rule name (e.g. Festive Season)" required />
+          <input type="text" id="p-roomTypeId" placeholder="Room Type ID" required />
+          <input type="text" id="p-season" placeholder="Season / Rule Name (e.g. Festive Surge)" required />
           <select id="p-ruleType">
             <option value="seasonal">Seasonal</option>
             <option value="weekend">Weekend</option>
           </select>
-          <input type="date" id="p-startDate" />
-          <input type="date" id="p-endDate" />
-          <input type="number" step="0.05" id="p-multiplier" placeholder="Multiplier (e.g. 1.25)" required />
-          <button type="submit" class="btn btn-primary">Create pricing rule</button>
+          <input type="date" id="p-startDate" title="Start date" />
+          <input type="date" id="p-endDate" title="End date" />
+          <input type="number" step="0.05" id="p-multiplier" placeholder="Multiplier (e.g. 1.25 for +25%)" required />
+          <button type="submit" class="btn btn-primary">Save Pricing Rule</button>
         </form>
       </div>
 
       <div class="panel">
-        <h3>Occupancy report</h3>
+        <h3>Occupancy &amp; Revenue Analytics</h3>
         <div class="filter-row">
           <input type="text" id="rep-hotelId" placeholder="Hotel ID (optional)" />
-          <button id="reportBtn" class="btn btn-ghost">Run report</button>
+          <button id="reportBtn" class="btn btn-ghost">Generate Report</button>
         </div>
         <div id="reportResults" class="report-list"></div>
       </div>
@@ -167,33 +281,60 @@
 <!-- LOGIN / REGISTER MODAL -->
 <div id="authModal" class="modal-backdrop" hidden>
   <div class="modal">
-    <button class="modal-close" id="modalCloseBtn">&times;</button>
+    <button class="modal-close" id="modalCloseBtn" aria-label="Close">&times;</button>
     <div class="modal-tabs">
-      <button class="modal-tab-btn active" data-form="login">Log in</button>
-      <button class="modal-tab-btn" data-form="register">Create account</button>
+      <button class="modal-tab-btn active" data-form="login">Sign In</button>
+      <button class="modal-tab-btn" data-form="register">Create Account</button>
     </div>
 
     <form id="loginForm" class="stacked-form modal-form active">
-      <input type="email" id="l-email" placeholder="Email" required />
+      <input type="email" id="l-email" placeholder="Email address" required />
       <input type="password" id="l-password" placeholder="Password" required />
-      <button type="submit" class="btn btn-primary">Log in</button>
-      <p class="hint">Try admin@hotel.com / staff@hotel.com / guest@hotel.com — password: Password123! (after running the seed script)</p>
+      <button type="submit" class="btn btn-primary">Sign In</button>
+      
+      <p class="hint">1-Click Quick Demo Accounts:</p>
+      <div class="demo-pills">
+        <button type="button" class="demo-pill" data-demo="guest">Guest</button>
+        <button type="button" class="demo-pill" data-demo="staff">Staff</button>
+        <button type="button" class="demo-pill" data-demo="admin">Admin</button>
+      </div>
     </form>
 
     <form id="registerForm" class="stacked-form modal-form">
-      <input type="text" id="r-name" placeholder="Full name" required />
-      <input type="email" id="r-email" placeholder="Email" required />
-      <input type="password" id="r-password" placeholder="Password (min 6 characters)" required />
-      <button type="submit" class="btn btn-primary">Create guest account</button>
+      <input type="text" id="r-name" placeholder="Full Name" required />
+      <input type="email" id="r-email" placeholder="Email Address" required />
+      <input type="password" id="r-password" placeholder="Password (minimum 6 characters)" required />
+      <button type="submit" class="btn btn-primary">Register Guest Account</button>
     </form>
 
     <div id="authError" class="auth-error"></div>
   </div>
 </div>
 
+<!-- INVOICE / RECEIPT MODAL -->
+<div id="invoiceModal" class="modal-backdrop" hidden>
+  <div class="modal modal-wide">
+    <button class="modal-close" id="invoiceCloseBtn" aria-label="Close">&times;</button>
+    <h3>Folio Invoice Summary</h3>
+    <div id="invoiceContent"></div>
+  </div>
+</div>
+
+<!-- CHECK-IN ROOM PICKER MODAL -->
+<div id="checkinModal" class="modal-backdrop" hidden>
+  <div class="modal modal-wide">
+    <button class="modal-close" id="checkinCloseBtn" aria-label="Close">&times;</button>
+    <h3>Assign Clean Room for Check-in</h3>
+    <p class="hint" id="checkinModalSubtitle">Select an inspected/clean room to complete guest check-in:</p>
+    <div id="cleanRoomsList" class="clean-rooms-grid"></div>
+    <div id="checkinModalStatus" class="status-line"></div>
+  </div>
+</div>
+
+<!-- TOAST NOTIFICATION -->
 <div id="toast" class="toast" hidden></div>
 
-<script src="/js/api.js"></script>
-<script src="/js/app.js"></script>
+<script src="/js/api.js?v=3.2"></script>
+<script src="/js/app.js?v=3.2"></script>
 </body>
 </html>
