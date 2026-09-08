@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema(
   {
@@ -22,6 +23,9 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.index({ email: 1 }, { unique: true });
+// Instance method for secure password verification
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.passwordHash);
+};
 
 module.exports = mongoose.model('User', userSchema);
