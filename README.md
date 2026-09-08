@@ -14,9 +14,11 @@ via Postman.
 
 | Name | Roll No | Department | Section |
 |---|---|---|---|
-| _fill in_ | _fill in_ | _fill in_ | _fill in_ |
-| _fill in_ | _fill in_ | _fill in_ | _fill in_ |
-| _fill in_ | _fill in_ | _fill in_ | _fill in_ |
+| Ann Mary Johnson| 2462039 | ADSE | 5BTCSAIML B |
+| Anki Pai| 2462036 | ADSE | 5BTCSAIML B |
+| Allen Prem Varghese | 2462030| ADSE | 5BTCSAIML B |
+| Ronit Anegundi | 2462188| ADSE | 5BTCSAIML B |
+
 
 ---
 
